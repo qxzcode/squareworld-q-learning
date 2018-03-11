@@ -18,7 +18,8 @@ GXX := g++
 LD  := ld
 
 # build flags
-GCCFLAGS  := -Wall -Wextra -std=c++14
+GCCFLAGS  := -Wall -Wextra
+GXXFLAGS  := -std=c++14
 LDFLAGS   := 
 
 ifeq ($(DEBUG),FALSE)
@@ -85,7 +86,7 @@ $(BIN_DIR)/%.o: $(SRC_DIR)/%.c   $(BIN_DIR)/%.d | $$(@D)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.cpp $(BIN_DIR)/%.d | $$(@D)
 	@echo "---- Compiling $<"
-	@$(GXX) $(GCCFLAGS) $(DEPFLAGS) -c $< -o $@
+	@$(GXX) $(GCCFLAGS) $(GXXFLAGS) $(DEPFLAGS) -c $< -o $@
 	@$(FINISH_DEP)
 
 $(BIN_DIR)/%.o: $(SRC_DIR)/%.s   $(BIN_DIR)/%.d | $$(@D)
