@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "genann.h"
 #include "GameState.h"
 #include "Action.h"
@@ -29,6 +31,12 @@ public:
     
 private:
     genann* ann;
+    
+    struct observation {
+        double inputs[NUM_INPUTS];
+        double q;
+    };
+    std::vector<observation> replayMemory;
     
     double getQ(const GameState& state, Action action) const;
     double getMaxQ(const GameState& state) const;
