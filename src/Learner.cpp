@@ -17,8 +17,8 @@ void Learner::observeReward(const GameState& curState, Action action, const Game
     obs.inputs[NUM_INPUTS-1] = action;
     
     replayMemory.push_back(std::move(obs));
-    if (replayMemory.size() >= 200) {
-        for (long n = 0; n < 300; n++) {
+    if (replayMemory.size() >= Learner::REPLAY_MEMORY_SIZE) {
+        for (unsigned long n = 0; n < Learner::TRAIN_LOOPS; n++) {
             for (auto&& o : replayMemory) {
                 genann_train(ann, o.inputs, &o.q, learningRate);
             }
