@@ -11,7 +11,7 @@ public:
     Learner(Learner&&) = default;
     Learner(const Learner&) = delete; // I'm lazy
     Learner(double learningRate, double discountFactor, double randomRate):
-            learningRate(learningRate),discountFactor(discountFactor),randomRate(randomRate) {
+                learningRate(learningRate),discountFactor(discountFactor),randomRate(randomRate) {
         ann = genann_init(NUM_INPUTS, 5, 10, 1);
     }
     ~Learner() {
