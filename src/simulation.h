@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility> // std::pair
+
 #include "GameState.h"
 
 namespace simulation {
@@ -11,6 +13,6 @@ namespace simulation {
     constexpr double PLAYER_SIZE = 10;
     constexpr unsigned int FIRE_RATE = 2;
     
-    double update(GameState& state, Action action);
+    std::pair<double, bool> update(GameState& state, Action action);
     
 }

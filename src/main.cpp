@@ -20,8 +20,11 @@ int main() {
     for (unsigned long n = 0; n < Learner::REPLAY_MEMORY_SIZE; n++) {
         GameState lastState = state;
         Action action = learner.chooseAction(state);
-        double reward = simulation::update(state, action);
-        learner.observeReward(lastState, action, state, reward);
+        auto res = simulation::update(state, action);
+        learner.observeReward(lastState, action, res.second? lastState : state, res.first);
+        if (res.second) {
+            // TODO: reset
+        }
     }
     
     return 0;

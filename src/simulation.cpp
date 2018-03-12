@@ -6,10 +6,9 @@ static void rotate(double& x, double& y, double sin, double cos) {
     double newX = x*cos+y*sin, newY = y*cos-x*sin;
     x = newX; y = newY;
 }
-struct velocity { double x, y; bool valid = true; };
-static velocity calcAutoShoot(double dx, double dy, double vx, double vy, double v) {
+static double calcAutoShoot(double dx, double dy, double vx, double vy, double v) {
     // rotate reference frame
-    const double m = hypot(vx, vy);
+    const double m = std::hypot(vx, vy);
     double sin = m==0? 0 : vy/m;
     double cos = m==0? 1 : vx/m;
     rotate(vx, vy, sin, cos);
@@ -21,8 +20,8 @@ static velocity calcAutoShoot(double dx, double dy, double vx, double vy, double
     
     // calculate the result
     double disc = adf2*adf2 + 4*df*(v*v-vx*vx);
-    if (disc < 0) return {0, 0, false}; // no solution
-    disc = sqrt(disc);
+    // if (disc < 0) return; // no solution
+    disc = std::sqrt(disc);
     df *= 2;
     sin = -sin; // invert rot
     
@@ -30,19 +29,19 @@ static velocity calcAutoShoot(double dx, double dy, double vx, double vy, double
     double b1 = vx - c1*dx/dy;
     const double t1 = dy/c1;
     rotate(b1, c1, sin, cos);
-    const velocity res1 = {b1, c1};
+    const double res1 = std::atan2(c1, b1);
     double c2 = (adf2 - disc) / df;
     double b2 = vx - c2*dx/dy;
     const double t2 = dy/c2;
     rotate(b2, c2, sin, cos);
-    const velocity res2 = {b2, c2};
+    const double res2 = std::atan2(c2, b2);
     
     if (t1 < 0) return res2;
     if (t2 < 0) return res1;
     return t1<t2? res1 : res2;
 }
 
-double simulation::update(GameState& state, Action action) {
+std::pair<double, bool> simulation::update(GameState& state, Action action) {
     // TODO
     switch (action) {
         case Action::UP:
@@ -58,7 +57,7 @@ double simulation::update(GameState& state, Action action) {
             state.playerX() -= simulation::PLAYER_SPEED;
             break;
         default:
-            // wuut
+            // wuut (or NONE)
             break;
     }
     // Fire a bullet (dark magick formula for aim)
@@ -84,11 +83,11 @@ double simulation::update(GameState& state, Action action) {
             && (state.bulletY(i) > state.playerY())
             && (state.bulletY(i) < state.playerY() + simulation::PLAYER_SIZE)) {
             // ouch.
-            return -10;
+            return {-10, true};
         }
     }
 
     // welp, player's still alive
     // take your cookie and leave
-    return 0.1;
+    return {0.1, false};
 }
