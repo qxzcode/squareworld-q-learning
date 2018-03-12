@@ -20,7 +20,7 @@ double simulation::update(GameState& state, Action action) {
             break;
     }
     // Fire a bullet (dark magick formula for aim)
-    if (state.fireCycle >= simulation::FIRE_RATE - 1) {
+    if (state.fireCycle >= simulation::FIRE_RATE) {
         state.fireCycle = 0;
         double bulletAngle = 0; // MAGICK HERE
         // bullet starts in center
