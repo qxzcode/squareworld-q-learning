@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Action.h"
+#include "util.h"
 
 class GameState {
 public:

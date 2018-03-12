@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Learner.h"
+#include "simulation.h"
 
 class Visualizer {
 public:

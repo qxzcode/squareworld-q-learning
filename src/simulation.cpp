@@ -101,3 +101,8 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     // take your cookie and leave
     return {0.1, false};
 }
+
+void simulation::reset(GameState& state) {
+    state.playerX() = util::rand() * simulation::SCREEN_WIDTH;
+    state.playerY() = util::rand() * simulation::SCREEN_HEIGHT;
+}

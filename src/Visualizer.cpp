@@ -5,7 +5,11 @@ void Visualizer::loop() {
 }
 
 void Visualizer::update() {
-    // TODO
+    Action action = learner.chooseAction(state);
+    auto res = simulation::update(state, action);
+    if (res.second) {
+        simulation::reset(state);
+    }
 }
 
 void Visualizer::draw() const {

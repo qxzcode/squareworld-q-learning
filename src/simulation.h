@@ -14,5 +14,7 @@ namespace simulation {
     constexpr unsigned int FIRE_RATE = 2;
     
     std::pair<double, bool> update(GameState& state, Action action);
+
+    void reset(GameState& state);
     
 }
