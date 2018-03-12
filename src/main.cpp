@@ -6,8 +6,8 @@
 
 static GameState initState() {
     GameState state;
-    state.playerX() = util::rand();
-    state.playerY() = util::rand();
+    state.playerX() = util::rand() * simulation::SCREEN_WIDTH;
+    state.playerY() = util::rand() * simulation::SCREEN_HEIGHT;
     return state;
 }
 
