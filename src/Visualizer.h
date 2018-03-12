@@ -1,4 +1,5 @@
 #pragma once
+#ifdef VISUALIZER
 
 #include "Learner.h"
 #include "simulation.h"
@@ -16,3 +17,4 @@ private:
     void update();
     void draw() const;
 };
+#endif

@@ -1,3 +1,4 @@
+#ifdef VISUALIZER
 #include "Visualizer.h"
 
 void Visualizer::loop() {
@@ -15,3 +16,4 @@ void Visualizer::update() {
 void Visualizer::draw() const {
     // TODO
 }
+#endif
