@@ -18,7 +18,10 @@ int main() {
     GameState state = initState();
     
     for (long n = 0; n < 1000; n++) {
-        simulation::update(state);
+        GameState lastState = state;
+        Action action = learner.chooseAction(state);
+        double reward = simulation::update(state, action);
+        learner.observeReward(lastState, action, state, reward);
     }
     
     return 0;

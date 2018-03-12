@@ -1,5 +1,5 @@
 #include "simulation.h"
 
-void simulation::update(GameState& state) {
+double simulation::update(GameState& state, Action action) {
     // TODO
 }

@@ -4,6 +4,6 @@
 
 namespace simulation {
     
-    void update(GameState& state);
+    double update(GameState& state, Action action);
     
 }

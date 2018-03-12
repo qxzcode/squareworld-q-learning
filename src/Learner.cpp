@@ -11,13 +11,20 @@ constexpr double MIN_DOUBLE = -std::numeric_limits<double>::max();
 
 // static size_t counter = 0;
 void Learner::observeReward(const GameState& curState, Action action, const GameState& nextState, double reward) {
-    double newQ = reward + discountFactor*getMaxQ(nextState);
+    observation obs;
+    obs.q = reward + discountFactor*getMaxQ(nextState);
+    std::copy(std::begin(curState.values), std::end(curState.values), obs.inputs);
+    obs.inputs[NUM_INPUTS-1] = action;
     
-    double inputs[NUM_INPUTS];
-    std::copy(std::begin(curState.values), std::end(curState.values), inputs);
-    inputs[NUM_INPUTS-1] = action;
-    
-    genann_train(ann, inputs, &newQ, learningRate);
+    replayMemory.push_back(std::move(obs));
+    if (replayMemory.size() >= 200) {
+        for (long n = 0; n < 300; n++) {
+            for (auto&& o : replayMemory) {
+                genann_train(ann, o.inputs, &o.q, learningRate);
+            }
+        }
+        replayMemory.clear();
+    }
 }
 
 Action Learner::chooseAction(const GameState& state) const {
