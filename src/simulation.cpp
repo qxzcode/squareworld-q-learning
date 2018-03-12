@@ -1,5 +1,47 @@
 #include "simulation.h"
 
+#include <cmath>
+
+static void rotate(double& x, double& y, double sin, double cos) {
+    double newX = x*cos+y*sin, newY = y*cos-x*sin;
+    x = newX; y = newY;
+}
+struct velocity { double x, y; bool valid = true; };
+static velocity calcAutoShoot(double dx, double dy, double vx, double vy, double v) {
+    // rotate reference frame
+    const double m = hypot(vx, vy);
+    double sin = m==0? 0 : vy/m;
+    double cos = m==0? 1 : vx/m;
+    rotate(vx, vy, sin, cos);
+    rotate(dx, dy, sin, cos);
+    
+    dy = -dy;
+    const double adf2 = 2*vx*dx/dy;
+    double df = 1 + (dx*dx)/(dy*dy);
+    
+    // calculate the result
+    double disc = adf2*adf2 + 4*df*(v*v-vx*vx);
+    if (disc < 0) return {0, 0, false}; // no solution
+    disc = sqrt(disc);
+    df *= 2;
+    sin = -sin; // invert rot
+    
+    double c1 = (adf2 + disc) / df;
+    double b1 = vx - c1*dx/dy;
+    const double t1 = dy/c1;
+    rotate(b1, c1, sin, cos);
+    const velocity res1 = {b1, c1};
+    double c2 = (adf2 - disc) / df;
+    double b2 = vx - c2*dx/dy;
+    const double t2 = dy/c2;
+    rotate(b2, c2, sin, cos);
+    const velocity res2 = {b2, c2};
+    
+    if (t1 < 0) return res2;
+    if (t2 < 0) return res1;
+    return t1<t2? res1 : res2;
+}
+
 double simulation::update(GameState& state, Action action) {
     // TODO
     switch (action) {

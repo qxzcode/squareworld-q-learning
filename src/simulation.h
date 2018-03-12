@@ -1,7 +1,6 @@
 #pragma once
 
 #include "GameState.h"
-#include <cmath>
 
 namespace simulation {
     
