@@ -4,10 +4,14 @@
 
 #include "debug.h"
 
-static GameState initState() {
-    GameState state;
+static void resetPlayer(GameState& state) {
     state.playerX() = util::rand() * simulation::SCREEN_WIDTH;
     state.playerY() = util::rand() * simulation::SCREEN_HEIGHT;
+}
+
+static GameState initState() {
+    GameState state;
+    resetPlayer(state);
     return state;
 }
 
@@ -23,7 +27,8 @@ int main() {
         auto res = simulation::update(state, action);
         learner.observeReward(lastState, action, res.second? lastState : state, res.first);
         if (res.second) {
-            // TODO: reset
+            // reset the player pos
+            resetPlayer(state);
         }
     }
     
