@@ -5,13 +5,14 @@
 class GameState {
 public:
     static constexpr unsigned NUM_BULLETS = 5;
-    static constexpr unsigned NUM_VALUES = 2 + 2*NUM_BULLETS;
+    static constexpr unsigned NUM_VALUES = 2 + 3*NUM_BULLETS;
     
     double values[NUM_VALUES] = {0};
     
     double& playerX() { return values[0]; }
     double& playerY() { return values[1]; }
-    double& bulletX(int n) { return values[2+n*2]; }
-    double& bulletY(int n) { return values[3+n*2]; }
+    double& bulletX(int n) { return values[2+n*3]; }
+    double& bulletY(int n) { return values[3+n*3]; }
+    double& bulletDirection(int n) { return values[4+n*3]; }
     
 };
