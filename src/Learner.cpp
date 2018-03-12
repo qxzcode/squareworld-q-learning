@@ -21,10 +21,14 @@ void Learner::observeReward(const GameState& curState, Action action, const Game
 }
 
 Action Learner::chooseAction(const GameState& state) const {
+    if (util::rand() < randomRate) {
+        return static_cast<Action>(util::rand() * NUM_ACTIONS);
+    }
+    
     Action bestAction = Action::NUM_ACTIONS;
     double bestQ = MIN_DOUBLE;
     forEachAction([&](Action a) {
-        double Q = getQ(state, a) + util::rand()*qRandomness;
+        double Q = getQ(state, a);
         if (Q > bestQ) {
             bestQ = Q;
             bestAction = a;

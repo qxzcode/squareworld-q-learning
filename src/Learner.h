@@ -10,8 +10,8 @@ public:
     
     Learner(Learner&&) = default;
     Learner(const Learner&) = delete; // I'm lazy
-    Learner(double learningRate, double discountFactor, double qRandomness):
-            learningRate(learningRate),discountFactor(discountFactor),qRandomness(qRandomness) {
+    Learner(double learningRate, double discountFactor, double randomRate):
+            learningRate(learningRate),discountFactor(discountFactor),randomRate(randomRate) {
         ann = genann_init(NUM_INPUTS, 5, 10, 1);
     }
     ~Learner() {
@@ -25,7 +25,7 @@ public:
     void load();
     void save() const;
     
-    double learningRate, discountFactor, qRandomness;
+    double learningRate, discountFactor, randomRate;
     
 private:
     genann* ann;
