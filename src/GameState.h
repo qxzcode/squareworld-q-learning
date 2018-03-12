@@ -14,5 +14,7 @@ public:
     double& bulletX(int n) { return values[2+n*3]; }
     double& bulletY(int n) { return values[3+n*3]; }
     double& bulletDirection(int n) { return values[4+n*3]; }
-    
+
+    unsigned short currentBullet = 0;
+    unsigned short fireCycle = 0;
 };

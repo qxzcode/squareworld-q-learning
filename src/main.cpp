@@ -14,7 +14,7 @@ static GameState initState() {
 int main() {
     cout << "== Squareworld Q-Learning ==" << endl;
     
-    Learner learner(0.3, 0.9, 0.1);
+    Learner learner(0.3, 0.9, 0.1); // learning rate, discount factor, random action rate
     GameState state = initState();
     
     for (long n = 0; n < 1000; n++) {
