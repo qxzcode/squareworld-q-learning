@@ -17,7 +17,7 @@ int main() {
     Learner learner(0.3, 0.9, 0.1); // learning rate, discount factor, random action rate
     GameState state = initState();
     
-    for (long n = 0; n < Learner::REPLAY_MEMORY_SIZE; n++) {
+    for (unsigned long n = 0; n < Learner::REPLAY_MEMORY_SIZE; n++) {
         GameState lastState = state;
         Action action = learner.chooseAction(state);
         double reward = simulation::update(state, action);
