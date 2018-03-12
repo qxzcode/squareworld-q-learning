@@ -15,6 +15,9 @@ double simulation::update(GameState& state, Action action) {
         case Action::LEFT:
             state.playerX() -= simulation::PLAYER_SPEED;
             break;
+        default:
+            // wuut
+            break;
     }
     // Fire a bullet (dark magick formula for aim)
     if (state.fireCycle >= simulation::FIRE_RATE - 1) {
@@ -29,7 +32,7 @@ double simulation::update(GameState& state, Action action) {
     }
     state.fireCycle++;
     // step the bullets
-    for (int i = 0; i < GameState::NUM_BULLETS; i++) {
+    for (unsigned int i = 0; i < GameState::NUM_BULLETS; i++) {
         state.bulletX(i) += std::cos(state.bulletDirection(i));
         state.bulletY(i) += std::sin(state.bulletDirection(i));
 
@@ -37,10 +40,10 @@ double simulation::update(GameState& state, Action action) {
         if ((state.bulletX(i) > state.playerX())
             && (state.bulletX(i) < state.playerX() + simulation::PLAYER_SIZE)
             && (state.bulletY(i) > state.playerY())
-            && (state.bulletY(i) < state.playerY() + simulation::PLAYER_SIZE)
+            && (state.bulletY(i) < state.playerY() + simulation::PLAYER_SIZE)) {
             // ouch.
             return -10;
-        )
+        }
     }
 
     // welp, player's still alive
