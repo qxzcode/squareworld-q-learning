@@ -63,7 +63,12 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     // Fire a bullet (dark magick formula for aim)
     if (state.fireCycle >= simulation::FIRE_RATE) {
         state.fireCycle = 0;
-        double bulletAngle = 0; // MAGICK HERE
+        double bulletAngle = calcAutoShoot(
+            (simulation::SCREEN_WIDTH / 2) - state.playerX(),
+            (simulation::SCREEN_HEIGHT / 2) - state.playerY(),
+            action != Action::NONE ? simulation::PLAYER_SPEED : 0,
+            simulation::BULLET_SPEED
+        ); // MAGICK HERE
         // bullet starts in center
         state.bulletX(state.currentBullet) = simulation::SCREEN_WIDTH / 2;
         state.bulletY(state.currentBullet) = simulation::SCREEN_HEIGHT / 2;
