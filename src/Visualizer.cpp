@@ -51,7 +51,7 @@ void Visualizer::draw() const {
         simulation::SCREEN_HEIGHT * Visualizer::SCALE, {0xFF, 0xFF, 0xFF});
     // --render
     // player
-    fillRect(surface, state.playerX(), state.playerY(), simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x00, 0x00, 0xFF});
+    fillRect(surface, state.playerX() - simulation::PLAYER_SIZE / 2, state.playerY() - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x00, 0x00, 0xFF});
     // bullets [arbitrarily size 2]
     for (unsigned int i = 0; i < GameState::NUM_BULLETS; i++) {
         fillRect(surface, state.bulletX(i) - 1, state.bulletY(i) - 1, 2, 2, {0xFF, 0x00, 0x00});
