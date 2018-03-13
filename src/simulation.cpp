@@ -42,7 +42,7 @@ static double calcAutoShoot(double dx, double dy, double vx, double vy, double v
 }
 
 std::pair<double, bool> simulation::update(GameState& state, Action action) {
-    // TODO
+    double passiveReward = 0.004;
     short ax = 0, ay = 0;
     switch (action) {
         case Action::UP:
@@ -101,6 +101,11 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
         state.playerVy() = 0;
     }
 
+    // slightly penalize not moving
+    if (util::compareDouble(std::abs(state.playerVx()), 0) && util::compareDouble(std::abs(state.playerVy()), 0)) {
+        passiveReward = 0;
+    }
+
     // Fire a bullet (dark magick formula for aim)
     if (state.fireCycle >= FIRE_RATE) {
         state.fireCycle = 0;
@@ -135,7 +140,7 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
 
     // welp, player's still alive
     // take your cookie and leave
-    return {0.004, false};
+    return {passiveReward, false};
 }
 
 void simulation::reset(GameState& state) {

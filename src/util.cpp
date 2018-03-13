@@ -17,3 +17,9 @@ double util::getTime() {
 void util::sleep(long ms) {
     std::this_thread::sleep_for(std::chrono::milliseconds(ms));
 }
+
+const float ROUNDING_ERROR = 0.000001f;
+
+bool util::compareDouble(const double a, const double b) {
+    return (a + ROUNDING_ERROR >= b) && (a - ROUNDING_ERROR <= b);
+}
