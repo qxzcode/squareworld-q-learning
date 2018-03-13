@@ -46,16 +46,16 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     short ax = 0, ay = 0;
     switch (action) {
         case Action::UP:
-            ay = -PLAYER_SPEED;
+            ay = -PLAYER_ACCEL;
             break;
         case Action::DOWN:
-            ay = +PLAYER_SPEED;
+            ay = +PLAYER_ACCEL;
             break;
         case Action::RIGHT:
-            ax = +PLAYER_SPEED;
+            ax = +PLAYER_ACCEL;
             break;
         case Action::LEFT:
-            ax = -PLAYER_SPEED;
+            ax = -PLAYER_ACCEL;
             break;
         default:
             // wuut (or NONE)
@@ -64,6 +64,20 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     // apply acceleration
     state.playerVx() += ax;
     state.playerVy() += ay;
+
+    // enforce max velocity
+    if (state.playerVx() > PLAYER_MAX_SPEED) {
+        state.playerVx() = PLAYER_MAX_SPEED;
+    }
+    if (state.playerVx() < -PLAYER_MAX_SPEED) {
+        state.playerVx() = -PLAYER_MAX_SPEED;
+    }
+    if (state.playerVy() > PLAYER_MAX_SPEED) {
+        state.playerVy() = PLAYER_MAX_SPEED;
+    }
+    if (state.playerVy() < -PLAYER_MAX_SPEED) {
+        state.playerVy() = -PLAYER_MAX_SPEED;
+    }
     
     // integrate velocity
     state.playerX() += state.playerVx();

@@ -6,7 +6,8 @@
 class GameState {
 public:
     static constexpr unsigned NUM_BULLETS = 6;
-    static constexpr unsigned NUM_VALUES = 4 + 3*NUM_BULLETS;
+    static constexpr unsigned NUM_PLAYER_VALUES = 4;
+    static constexpr unsigned NUM_VALUES = NUM_PLAYER_VALUES + 3*NUM_BULLETS;
     
     double values[NUM_VALUES] = {0};
     

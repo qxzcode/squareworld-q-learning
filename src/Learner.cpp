@@ -17,10 +17,20 @@ static std::default_random_engine randEngine(std::chrono::system_clock::now().ti
 using inputArr_t = double[Learner::NUM_INPUTS];
 static void fillInputs(inputArr_t& inputs, const GameState& state, Action action) {
     std::copy(std::begin(state.values), std::end(state.values), inputs);
-    for (int i = 0; i < 4; i++) {
-        inputs[i] /= 100.0;
+    // normalize player values
+    inputs[0] /= simulation::SCREEN_WIDTH;
+    inputs[1] /= simulation::SCREEN_HEIGHT;
+    inputs[2] = (inputs[2] + simulation::PLAYER_MAX_SPEED) / (simulation::PLAYER_MAX_SPEED * 2);
+    inputs[3] = (inputs[3] + simulation::PLAYER_MAX_SPEED) / (simulation::PLAYER_MAX_SPEED * 2);
+    // normalize bullet positions
+    for (unsigned short i = GameState::NUM_PLAYER_VALUES; i < GameState::NUM_VALUES; i++) {
+        if ((i % 3) == 0) {
+            inputs[i] /= simulation::SCREEN_WIDTH;
+        } else if ((i % 3) == 1) {
+            inputs[i] /= simulation::SCREEN_HEIGHT;
+        }
     }
-    for (int i = 0; i < Action::NUM_ACTIONS; i++) {
+    for (unsigned short i = 0; i < Action::NUM_ACTIONS; i++) {
         inputs[GameState::NUM_VALUES + i] = action==i? 1.0 : 0.0;
     }
 }
