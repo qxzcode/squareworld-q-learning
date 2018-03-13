@@ -4,7 +4,7 @@ NAME := Squareworld Q-learning
 EXE  := learn
 
 DEBUG := FALSE
-VISUALIZER := TRUE
+VISUALIZER := 1
 
 SRC_DIR := src
 BIN_DIR := build
@@ -23,7 +23,7 @@ GCCFLAGS  := $(GCCFLAGS) -Wall -Wextra
 GXXFLAGS  := $(GXXFLAGS) -std=c++14
 LDFLAGS   := $(LDFLAGS)
 
-ifeq ($(VISUALIZER),TRUE)
+ifeq ($(VISUALIZER),1)
 	GCCFLAGS += $(shell sdl2-config --cflags) -DVISUALIZER
 	LDFLAGS  += $(shell sdl2-config --libs)
 endif
