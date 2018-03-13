@@ -19,7 +19,7 @@ static constexpr double DEFAULT_LEARN_RATE = 0.3;
 static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.9;
 static constexpr double DEFAULT_RANDOM_RATE = 0.1;
 
-void train() {
+void train(bool fresh) {
     double learnRate = DEFAULT_LEARN_RATE;
     double discountFactor = DEFAULT_DISCOUNT_FACTOR;
     double randomRate = DEFAULT_RANDOM_RATE;
@@ -33,6 +33,10 @@ void train() {
     cout << "Training for " << Learner::GENERATION_COUNT << " generations" << endl;
 
     Learner learner(learnRate, discountFactor, randomRate); // learning rate, discount factor, random action rate
+    if (!fresh) {
+        learner.load();
+        cout << "Loaded saved neural network" << endl;
+    }
     GameState state;
     simulation::reset(state);
     
@@ -70,10 +74,14 @@ int main(int argc, char* argv[]) {
     cout << "== Squareworld Q-Learning ==" << endl;
 
     Command command = Command::TRAIN;
+    bool fresh = true;
     if (argc > 1) {
         std::string carg(argv[1]);
         if (carg == "t") {
             command = Command::TRAIN;
+        } else if (carg == "r") {
+            command = Command::TRAIN;
+            fresh = false;
         } else if (carg == "v") {
             command = Command::VISUALIZE;
         } else {
@@ -83,7 +91,7 @@ int main(int argc, char* argv[]) {
 
     switch (command) {
         case Command::TRAIN:
-            train();
+            train(fresh);
             break;
         case Command::VISUALIZE:
             visualize();
