@@ -43,43 +43,48 @@ static double calcAutoShoot(double dx, double dy, double vx, double vy, double v
 
 std::pair<double, bool> simulation::update(GameState& state, Action action) {
     // TODO
-    short vx = 0, vy = 0;
+    short ax = 0, ay = 0;
     switch (action) {
         case Action::UP:
-            vy = -PLAYER_SPEED;
+            ay = -PLAYER_SPEED;
             break;
         case Action::DOWN:
-            vy = +PLAYER_SPEED;
+            ay = +PLAYER_SPEED;
             break;
         case Action::RIGHT:
-            vx = +PLAYER_SPEED;
+            ax = +PLAYER_SPEED;
             break;
         case Action::LEFT:
-            vx = -PLAYER_SPEED;
+            ax = -PLAYER_SPEED;
             break;
         default:
             // wuut (or NONE)
             break;
     }
-    state.playerX() += vx;
-    state.playerY() += vy;
+    // apply acceleration
+    state.playerVx() += ax;
+    state.playerVy() += ay;
+    
+    // integrate velocity
+    state.playerX() += state.playerVx();
+    state.playerY() += state.playerVy();
 
     // enforce player bounding
     if (state.playerX() < PLAYER_SIZE / 2) {
         state.playerX() = PLAYER_SIZE / 2;
-        vx = 0;
+        state.playerVx() = 0;
     }
     if (state.playerX() + (PLAYER_SIZE / 2) > SCREEN_WIDTH) {
         state.playerX() = SCREEN_WIDTH - (PLAYER_SIZE / 2);
-        vx = 0;
+        state.playerVx() = 0;
     }
     if (state.playerY() < PLAYER_SIZE) {
         state.playerY() = PLAYER_SIZE / 2;
-        vy = 0;
+        state.playerVy() = 0;
     }
     if (state.playerY() + (PLAYER_SIZE / 2) > SCREEN_HEIGHT) {
         state.playerY() = SCREEN_HEIGHT - (PLAYER_SIZE / 2);
-        vy = 0;
+        state.playerVy() = 0;
     }
 
     // Fire a bullet (dark magick formula for aim)
@@ -88,7 +93,7 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
         double bulletAngle = calcAutoShoot(
             (SCREEN_WIDTH / 2) - state.playerX(),
             (SCREEN_HEIGHT / 2) - state.playerY(),
-            vx, vy,
+            state.playerVx(), state.playerVy(),
             BULLET_SPEED
         );
         // bullet starts in center
