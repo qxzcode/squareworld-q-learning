@@ -8,7 +8,7 @@
 
 class Learner {
 public:
-    static constexpr unsigned NUM_INPUTS = GameState::NUM_VALUES + 1;
+    static constexpr unsigned NUM_INPUTS = GameState::NUM_VALUES + Action::NUM_ACTIONS;
     static constexpr uint64_t REPLAY_MEMORY_SIZE = 200;
     static constexpr uint64_t TRAIN_LOOPS = 300;
     
@@ -16,7 +16,8 @@ public:
     Learner(const Learner&) = delete; // I'm lazy
     Learner(double learningRate, double discountFactor, double randomRate):
                 learningRate(learningRate),discountFactor(discountFactor),randomRate(randomRate) {
-        ann = genann_init(NUM_INPUTS, 5, 10, 1);
+        ann = genann_init(NUM_INPUTS, 0, 3, 1);
+        ann->activation_output = genann_act_linear;
     }
     ~Learner() {
         genann_free(ann);

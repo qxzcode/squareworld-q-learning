@@ -110,13 +110,13 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
             && (state.bulletY(i) > state.playerY() - (simulation::PLAYER_SIZE / 2))
             && (state.bulletY(i) < state.playerY() + (simulation::PLAYER_SIZE / 2))) {
             // ouch.
-            return {-10, true};
+            return {-1.0, true};
         }
     }
 
     // welp, player's still alive
     // take your cookie and leave
-    return {0.1, false};
+    return {0.04, false};
 }
 
 void simulation::reset(GameState& state) {

@@ -14,12 +14,28 @@ constexpr double MIN_DOUBLE = -std::numeric_limits<double>::max();
 
 static std::default_random_engine randEngine(std::chrono::system_clock::now().time_since_epoch().count());
 
+using inputArr_t = double[Learner::NUM_INPUTS];
+static void fillInputs(inputArr_t& inputs, const GameState& state, Action action) {
+    std::copy(std::begin(state.values), std::end(state.values), inputs);
+    for (int i = 0; i < 4; i++) {
+        inputs[i] /= 100.0;
+    }
+    for (int i = 0; i < Action::NUM_ACTIONS; i++) {
+        inputs[GameState::NUM_VALUES + i] = action==i? 1.0 : 0.0;
+    }
+}
+
 // static size_t counter = 0;
 void Learner::observeReward(const GameState& curState, Action action, const GameState& nextState, double reward) {
     observation obs;
     obs.q = reward + discountFactor*getMaxQ(nextState);
-    std::copy(std::begin(curState.values), std::end(curState.values), obs.inputs);
-    obs.inputs[NUM_INPUTS-1] = action;
+    fillInputs(obs.inputs, curState, action);
+    
+    for (double d : obs.inputs) {
+        cout << d << endl;
+    }
+    cout << endl;
+    cout << obs.q << endl << endl;
     
     replayMemory.push_back(std::move(obs));
     if (replayMemory.size() >= Learner::REPLAY_MEMORY_SIZE) {
@@ -34,19 +50,21 @@ void Learner::observeReward(const GameState& curState, Action action, const Game
 }
 
 Action Learner::chooseAction(const GameState& state) const {
-    if (util::rand() < randomRate) {
-        return static_cast<Action>(util::rand() * NUM_ACTIONS);
-    }
+    // if (util::rand() < randomRate) {
+    //     return static_cast<Action>(util::rand() * NUM_ACTIONS);
+    // }
     
     Action bestAction = Action::NUM_ACTIONS;
     double bestQ = MIN_DOUBLE;
     forEachAction([&](Action a) {
         double Q = getQ(state, a);
+        cout << "q["<<a<<"] = "<<Q << endl;
         if (Q > bestQ) {
             bestQ = Q;
             bestAction = a;
         }
     });
+    cout << endl;
     return bestAction;
 }
 
@@ -69,8 +87,7 @@ void Learner::save() const {
 
 double Learner::getQ(const GameState& curState, Action action) const {
     double inputs[NUM_INPUTS];
-    std::copy(std::begin(curState.values), std::end(curState.values), inputs);
-    inputs[NUM_INPUTS-1] = action;
+    fillInputs(inputs, curState, action);
     return *genann_run(ann, inputs);
 }
 
