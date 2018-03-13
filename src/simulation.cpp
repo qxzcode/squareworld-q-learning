@@ -65,10 +65,22 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     state.playerY() += vy;
 
     // enforce player bounding
-    if (state.playerX() < 0) state.playerX() = 0;
-    if (state.playerX() + simulation::PLAYER_SIZE > SCREEN_WIDTH) state.playerX() = SCREEN_WIDTH - simulation::PLAYER_SIZE;
-    if (state.playerY() < 0) state.playerY() = 0;
-    if (state.playerY() + simulation::PLAYER_SIZE > SCREEN_HEIGHT) state.playerY() = SCREEN_HEIGHT- simulation::PLAYER_SIZE;
+    if (state.playerX() < 0) {
+        state.playerX() = 0;
+        vx = 0;
+    }
+    if (state.playerX() + simulation::PLAYER_SIZE > SCREEN_WIDTH) {
+        state.playerX() = SCREEN_WIDTH - simulation::PLAYER_SIZE;
+        vx = 0;
+    }
+    if (state.playerY() < 0) {
+        state.playerY() = 0;
+        vy = 0;
+    }
+    if (state.playerY() + simulation::PLAYER_SIZE > SCREEN_HEIGHT) {
+        state.playerY() = SCREEN_HEIGHT- simulation::PLAYER_SIZE;
+        vy = 0;
+    }
 
     // Fire a bullet (dark magick formula for aim)
     if (state.fireCycle >= FIRE_RATE) {
