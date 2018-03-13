@@ -2,12 +2,17 @@
 
 #include <limits>
 #include <iterator>
+#include <chrono> // to seed randomness
+#include <random> // std::default_random_engine
+#include <algorithm> // std::shuffle
 #include <stdio.h>
 
 #include "debug.h"
 #include "util.h"
 
 constexpr double MIN_DOUBLE = -std::numeric_limits<double>::max();
+
+static std::default_random_engine randEngine(std::chrono::system_clock::now().time_since_epoch().count());
 
 // static size_t counter = 0;
 void Learner::observeReward(const GameState& curState, Action action, const GameState& nextState, double reward) {
@@ -19,6 +24,7 @@ void Learner::observeReward(const GameState& curState, Action action, const Game
     replayMemory.push_back(std::move(obs));
     if (replayMemory.size() >= Learner::REPLAY_MEMORY_SIZE) {
         for (unsigned long n = 0; n < Learner::TRAIN_LOOPS; n++) {
+            std::shuffle(replayMemory.begin(), replayMemory.end(), randEngine);
             for (auto&& o : replayMemory) {
                 genann_train(ann, o.inputs, &o.q, learningRate);
             }
