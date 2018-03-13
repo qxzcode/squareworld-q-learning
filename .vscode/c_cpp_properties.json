@@ -32,7 +32,9 @@
                 "/usr/local/include",
                 "${workspaceRoot}"
             ],
-            "defines": [],
+            "defines": [
+                "VISUALIZER"
+            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -63,7 +65,8 @@
             ],
             "defines": [
                 "_DEBUG",
-                "UNICODE"
+                "UNICODE",
+                "VISUALIZER"
             ],
             "intelliSenseMode": "clang-x64",
             "browse": {

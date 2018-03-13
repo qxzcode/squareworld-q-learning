@@ -18,9 +18,9 @@ GXX := g++
 LD  := ld
 
 # build flags
-GCCFLAGS  := $(GCCFLAGS) -Wall -Wextra
+GCCFLAGS  := $(GCCFLAGS) -Wall -Wextra $(shell sdl2-config --cflags)
 GXXFLAGS  := $(GXXFLAGS) -std=c++14
-LDFLAGS   := $(LDFLAGS)
+LDFLAGS   := $(LDFLAGS) $(shell sdl2-config --libs)
 
 ifeq ($(DEBUG),FALSE)
 	GCCFLAGS += -O3#s
