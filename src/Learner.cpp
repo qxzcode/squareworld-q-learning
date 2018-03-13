@@ -27,16 +27,31 @@ static double normAngle(double angle) {
     return angle / 3.1415926535897931;
 }
 
+struct bulletTmp {
+    double dx, dy, direction;
+    double dSq;
+    bool operator<(const bulletTmp& rhs) const {
+        return dSq < rhs.dSq;
+    }
+};
 using inputArr_t = double[Learner::NUM_INPUTS];
 static void fillInputs(inputArr_t& inputs, const GameState& state, Action action) {
     inputs[0] = normX(state.playerX);
     inputs[1] = normY(state.playerY);
     inputs[2] = normV(state.playerVx);
     inputs[3] = normV(state.playerVy);
+    bulletTmp bullets[GameState::NUM_BULLETS];
     for (unsigned i = 0; i < GameState::NUM_BULLETS; i++) {
-        inputs[4+i*3] = normX(state.bullets[i].x - state.playerX);
-        inputs[5+i*3] = normY(state.bullets[i].y - state.playerY);
-        inputs[6+i*3] = normAngle(state.bullets[i].direction);
+        bullets[i].direction = state.bullets[i].direction;
+        double dx = bullets[i].dx = state.bullets[i].x - state.playerX;
+        double dy = bullets[i].dy = state.bullets[i].y - state.playerY;
+        bullets[i].dSq = dx*dx + dy*dy;
+    }
+    std::sort(std::begin(bullets), std::end(bullets));
+    for (unsigned i = 0; i < GameState::NUM_BULLETS; i++) {
+        inputs[4+i*3] = normX(bullets[i].dx);
+        inputs[5+i*3] = normY(bullets[i].dy);
+        inputs[6+i*3] = normAngle(bullets[i].direction);
     }
     for (unsigned i = 0; i < Action::NUM_ACTIONS; i++) {
         inputs[GameState::NUM_VALUES + i] = action==i? 1.0 : 0.0;
