@@ -38,6 +38,7 @@ void train(bool fresh, uint64_t generationCount) {
     cout << "Learning rate: " << learnRate << endl;
     cout << "Discount factor: " << discountFactor << endl;
     cout << "Random action rate: " << randomRate << endl;
+    cout << "NN topology: " << Learner::HIDDEN_LAYERS << "H" << Learner::HIDDEN_LAYER_NEURONS << endl;
     cout << "Replay memory: " << Learner::REPLAY_MEMORY_SIZE << endl;
     cout << "Train loops: " << Learner::TRAIN_LOOPS << endl;
     cout << "Training for " << generationCount << " generations (press ENTER to halt)" << endl;
