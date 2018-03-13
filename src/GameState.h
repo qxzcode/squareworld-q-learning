@@ -16,7 +16,7 @@ public:
     double& playerVy() { return values[3]; }
     double& bulletX(int n) { return values[4+n*3]; }
     double& bulletY(int n) { return values[5+n*3]; }
-    double& bulletDirection(int n) { return values[4+n*3]; }
+    double& bulletDirection(int n) { return values[6+n*3]; }
 
     unsigned short currentBullet = 0;
     unsigned short fireCycle = 0;
