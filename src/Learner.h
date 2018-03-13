@@ -5,6 +5,7 @@
 #include "genann.h"
 #include "GameState.h"
 #include "Action.h"
+#include "Constants.h"
 
 class Learner {
 public:
