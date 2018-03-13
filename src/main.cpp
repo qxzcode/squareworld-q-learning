@@ -52,11 +52,14 @@ void train(bool fresh, uint64_t generationCount) {
     simulation::reset(state);
     
     // start helper thread
-    std::thread helperThread([]() {
-        cin.peek();
-        flushCin();
-        cinReady = true;
-    });
+    std::thread helperThread;
+    if (generationCount == UINT64_MAX) {
+        helperThread = std::thread([]() {
+            cin.peek();
+            flushCin();
+            cinReady = true;
+        });
+    }
     
     double lastProgress = util::getTime();
     double lastSave = util::getTime();
@@ -83,7 +86,8 @@ void train(bool fresh, uint64_t generationCount) {
     cout << "Saving neural network" << endl;
     learner.save();
     cout << "Save completed successfully." << endl;
-    
+
+    flushCin();
     helperThread.join();
 }
 
