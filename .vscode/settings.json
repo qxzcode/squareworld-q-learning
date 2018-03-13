@@ -38,6 +38,10 @@
         "algorithm": "cpp",
         "csetjmp": "cpp",
         "cstring": "cpp",
-        "string": "cpp"
+        "string": "cpp",
+        "cstddef": "cpp",
+        "numeric": "cpp",
+        "optional": "cpp",
+        "string_view": "cpp"
     }
 }
