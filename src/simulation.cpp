@@ -74,8 +74,8 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     if (state.fireCycle >= FIRE_RATE) {
         state.fireCycle = 0;
         double bulletAngle = calcAutoShoot(
-            state.playerX() - (SCREEN_WIDTH / 2),
-            state.playerY() - (SCREEN_HEIGHT / 2),
+            (SCREEN_WIDTH / 2) - state.playerX(),
+            (SCREEN_HEIGHT / 2) - state.playerY(),
             vx, vy,
             BULLET_SPEED
         );
