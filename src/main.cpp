@@ -1,4 +1,6 @@
-#include <SDL2/SDL.h>
+#ifdef VISUALIZER
+#include <SDL2/SDL.h> // for the SDL_main thingy
+#endif
 
 #include "Learner.h"
 #include "Visualizer.h"
