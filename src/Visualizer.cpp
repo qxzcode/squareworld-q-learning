@@ -19,13 +19,25 @@ void Visualizer::init() {
 }
 
 void Visualizer::loop() {
-    // TODO
-    draw();
-    SDL_UpdateWindowSurface(window);
-    SDL_Delay(10000);
+    while (running) {
+        update();
+        if (!running) return;
+        draw();
+        SDL_Delay(1000 / FPS);
+    }
 }
 
 void Visualizer::update() {
+    // SDL stuff
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        switch (event.type) {
+            case SDL_QUIT:
+                quit();
+                return;
+        }
+    }
+    // run the model
     Action action = learner.chooseAction(state);
     auto res = simulation::update(state, action);
     if (res.second) {
@@ -34,10 +46,23 @@ void Visualizer::update() {
 }
 
 void Visualizer::draw() const {
-    // clear
+    // --clear
     fillRect(surface, 0, 0, simulation::SCREEN_WIDTH * Visualizer::SCALE,
         simulation::SCREEN_HEIGHT * Visualizer::SCALE, {0xFF, 0xFF, 0xFF});
-    // render
+    // --render
+    // player
     fillRect(surface, state.playerX(), state.playerY(), simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x00, 0x00, 0xFF});
+    // bullets [arbitrarily size 2]
+    for (unsigned int i = 0; i < GameState::NUM_BULLETS; i++) {
+        fillRect(surface, state.bulletX(i) - 1, state.bulletY(i) - 1, 2, 2, {0xFF, 0x00, 0x00});
+    }
+    SDL_UpdateWindowSurface(window);
+}
+
+void Visualizer::quit() {
+    running = false;
+    SDL_FreeSurface(surface);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 #endif
