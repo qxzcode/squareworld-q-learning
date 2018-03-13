@@ -59,6 +59,7 @@ void visualize() {
     GameState state;
     Visualizer visualizer(learner, state);
     cout << "> Running SDL visualizer" << endl;
+    visualizer.init();
     visualizer.loop();
     #else
     cout << "Visualizer support not compiled in this binary." << endl;
