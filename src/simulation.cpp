@@ -65,20 +65,20 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     state.playerY() += vy;
 
     // enforce player bounding
-    if (state.playerX() < 0) {
-        state.playerX() = 0;
+    if (state.playerX() < PLAYER_SIZE / 2) {
+        state.playerX() = PLAYER_SIZE;
         vx = 0;
     }
-    if (state.playerX() + simulation::PLAYER_SIZE > SCREEN_WIDTH) {
-        state.playerX() = SCREEN_WIDTH - simulation::PLAYER_SIZE;
+    if (state.playerX() + (PLAYER_SIZE / 2) > SCREEN_WIDTH) {
+        state.playerX() = SCREEN_WIDTH - (PLAYER_SIZE / 2);
         vx = 0;
     }
-    if (state.playerY() < 0) {
-        state.playerY() = 0;
+    if (state.playerY() < PLAYER_SIZE) {
+        state.playerY() = PLAYER_SIZE;
         vy = 0;
     }
-    if (state.playerY() + simulation::PLAYER_SIZE > SCREEN_HEIGHT) {
-        state.playerY() = SCREEN_HEIGHT- simulation::PLAYER_SIZE;
+    if (state.playerY() + (PLAYER_SIZE / 2) > SCREEN_HEIGHT) {
+        state.playerY() = SCREEN_HEIGHT - (PLAYER_SIZE / 2);
         vy = 0;
     }
 
@@ -105,10 +105,10 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
         state.bulletY(i) += std::sin(state.bulletDirection(i)) * simulation::BULLET_SPEED;
 
         // check collision with player
-        if ((state.bulletX(i) > state.playerX())
-            && (state.bulletX(i) < state.playerX() + simulation::PLAYER_SIZE)
-            && (state.bulletY(i) > state.playerY())
-            && (state.bulletY(i) < state.playerY() + simulation::PLAYER_SIZE)) {
+        if ((state.bulletX(i) > state.playerX() - (simulation::PLAYER_SIZE / 2))
+            && (state.bulletX(i) < state.playerX() + (simulation::PLAYER_SIZE / 2))
+            && (state.bulletY(i) > state.playerY() - (simulation::PLAYER_SIZE / 2))
+            && (state.bulletY(i) < state.playerY() + (simulation::PLAYER_SIZE / 2))) {
             // ouch.
             return {-10, true};
         }
