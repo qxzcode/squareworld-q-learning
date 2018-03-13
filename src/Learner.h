@@ -12,12 +12,14 @@ public:
     static constexpr unsigned NUM_INPUTS = GameState::NUM_VALUES + Action::NUM_ACTIONS;
     static constexpr uint64_t REPLAY_MEMORY_SIZE = 200;
     static constexpr uint64_t TRAIN_LOOPS = 300;
+    static constexpr uint8_t HIDDEN_LAYERS = 8;
+    static constexpr uint8_t HIDDEN_LAYER_NEURONS = 8;
     
     Learner(Learner&&) = default;
     Learner(const Learner&) = delete; // I'm lazy
     Learner(double learningRate, double discountFactor, double randomRate):
                 learningRate(learningRate),discountFactor(discountFactor),randomRate(randomRate) {
-        ann = genann_init(NUM_INPUTS, 8, 8, 1);
+        ann = genann_init(NUM_INPUTS, HIDDEN_LAYERS, HIDDEN_LAYER_NEURONS, 1);
     }
     ~Learner() {
         genann_free(ann);

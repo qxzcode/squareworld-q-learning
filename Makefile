@@ -21,7 +21,7 @@ LD  := ld
 # build flags
 GCCFLAGS  := $(GCCFLAGS) -Wall -Wextra
 GXXFLAGS  := $(GXXFLAGS) -std=c++14
-LDFLAGS   := $(LDFLAGS)
+LDFLAGS   := $(LDFLAGS) -lpthread
 
 ifeq ($(VISUALIZER),1)
 	GCCFLAGS += $(shell sdl2-config --cflags) -DVISUALIZER
