@@ -52,11 +52,14 @@ void train(bool fresh, uint64_t generationCount) {
     simulation::reset(state);
     
     // start helper thread
-    std::thread helperThread([]() {
-        cin.peek();
-        flushCin();
-        cinReady = true;
-    });
+    std::thread helperThread;
+    if (generationCount == UINT64_MAX) {
+        helperThread = std::thread([]() {
+            cin.peek();
+            flushCin();
+            cinReady = true;
+        });
+    }
     
     double lastProgress = util::getTime();
     double lastSave = util::getTime();
@@ -83,17 +86,19 @@ void train(bool fresh, uint64_t generationCount) {
     cout << "Saving neural network" << endl;
     learner.save();
     cout << "Save completed successfully." << endl;
-    
+
+    flushCin();
     helperThread.join();
 }
 
-void visualize() {
+void visualize(int scale) {
     #ifdef VISUALIZER
     cout << "Loading saved model with default parameters." << endl;
     Learner learner(DEFAULT_LEARN_RATE, DEFAULT_DISCOUNT_FACTOR, DEFAULT_RANDOM_RATE);
     learner.load();
     GameState state;
     Visualizer visualizer(learner, state);
+    visualizer.scale = scale;
     cout << "> Running SDL visualizer" << endl;
     visualizer.init();
     visualizer.loop();
@@ -108,6 +113,7 @@ int main(int argc, char* argv[]) {
     Command command = Command::TRAIN;
     bool fresh = true;
     uint64_t generationCount = DEFAULT_GENERATION_COUNT;
+    int visualizerScale = 4;
     if (argc > 1) {
         std::string carg(argv[1]);
         if (carg.find("t") != std::string::npos) {
@@ -122,6 +128,11 @@ int main(int argc, char* argv[]) {
             }
         } else if (carg == "v") {
             command = Command::VISUALIZE;
+            if (argc > 2) {
+                std::string gcarg(argv[2]);
+                std::istringstream iss(gcarg);
+                iss >> visualizerScale;
+            }
         } else {
             command = Command::UNKNOWN;
         }
@@ -132,7 +143,7 @@ int main(int argc, char* argv[]) {
             train(fresh, generationCount);
             break;
         case Command::VISUALIZE:
-            visualize();
+            visualize(visualizerScale);
             break;
         case Command::UNKNOWN:
             cout << "Unknown command " << argv[1] << endl;
