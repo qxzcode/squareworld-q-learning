@@ -12,8 +12,8 @@ public:
     static constexpr unsigned NUM_INPUTS = GameState::NUM_VALUES + Action::NUM_ACTIONS;
     static constexpr uint64_t REPLAY_MEMORY_SIZE = 200;
     static constexpr uint64_t TRAIN_LOOPS = 300;
-    static constexpr uint8_t HIDDEN_LAYERS = 8;
-    static constexpr uint8_t HIDDEN_LAYER_NEURONS = 8;
+    static constexpr unsigned HIDDEN_LAYERS = 8;
+    static constexpr unsigned HIDDEN_LAYER_NEURONS = 8;
     
     Learner(Learner&&) = default;
     Learner(const Learner&) = delete; // I'm lazy
