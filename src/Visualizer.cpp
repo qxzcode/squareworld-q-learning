@@ -3,12 +3,8 @@
 #include "debug.h"
 #include <cstdlib>
 
-struct Color {
-    int r, g, b;
-};
-
-static void fillRect(SDL_Surface* surface, int x, int y, int w, int h, Color col) {
-    SDL_Rect r = {x * Visualizer::SCALE, y * Visualizer::SCALE, w * Visualizer::SCALE, h * Visualizer::SCALE};
+void Visualizer::fillRect(SDL_Surface* surface, int x, int y, int w, int h, Color col) const {
+    SDL_Rect r = {x * scale, y * scale, w * scale, h * scale};
     SDL_FillRect(surface, &r, SDL_MapRGB(surface->format, col.r, col.g, col.b));
 }
 
@@ -20,7 +16,7 @@ void Visualizer::init() {
         std::exit(-1);
     }
     window = SDL_CreateWindow("Squareworld Q-Learning", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-        simulation::SCREEN_WIDTH * Visualizer::SCALE, simulation::SCREEN_HEIGHT * Visualizer::SCALE, SDL_WINDOW_ALLOW_HIGHDPI);
+        simulation::SCREEN_WIDTH * scale, simulation::SCREEN_HEIGHT * scale, SDL_WINDOW_ALLOW_HIGHDPI);
     surface = SDL_GetWindowSurface(window);
 }
 
@@ -53,8 +49,8 @@ void Visualizer::update() {
 
 void Visualizer::draw() const {
     // --clear
-    fillRect(surface, 0, 0, simulation::SCREEN_WIDTH * Visualizer::SCALE,
-        simulation::SCREEN_HEIGHT * Visualizer::SCALE, {0xFF, 0xFF, 0xFF});
+    fillRect(surface, 0, 0, simulation::SCREEN_WIDTH * scale,
+        simulation::SCREEN_HEIGHT * scale, {0xFF, 0xFF, 0xFF});
     // --render
     // enemy
     fillRect(surface, simulation::SCREEN_WIDTH / 2 - simulation::PLAYER_SIZE / 2, simulation::SCREEN_HEIGHT / 2 - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x11, 0x11, 0x11});
