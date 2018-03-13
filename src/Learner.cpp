@@ -65,10 +65,10 @@ void Learner::observeReward(const GameState& curState, Action action, const Game
     fillInputs(obs.inputs, curState, action);
     
     // for (double d : obs.inputs) {
-    //     cout << d << endl;
+    //     cout << d << "\n";
     // }
-    // cout << endl;
-    // cout << obs.q << endl << endl;
+    // cout << "\n";
+    // cout << obs.q << "\n"<<endl;
     
     replayMemory.push_back(std::move(obs));
     if (replayMemory.size() >= Learner::REPLAY_MEMORY_SIZE) {
@@ -91,6 +91,7 @@ Action Learner::chooseAction(const GameState& state) const {
     double bestQ = MIN_DOUBLE;
     forEachAction([&](Action a) {
         double Q = getQ(state, a);
+        // cout.precision(12);
         // cout << "q["<<a<<"] = "<<Q << endl;
         if (Q > bestQ) {
             bestQ = Q;

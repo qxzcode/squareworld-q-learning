@@ -44,7 +44,7 @@ static double calcAutoShoot(double dx, double dy, double vx, double vy, double v
 }
 
 std::pair<double, bool> simulation::update(GameState& state, Action action) {
-    double passiveReward = 0.004;
+    double passiveReward = 0.04;
     short ax = 0, ay = 0;
     switch (action) {
         case Action::UP:

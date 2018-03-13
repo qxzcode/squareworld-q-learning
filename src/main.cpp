@@ -19,8 +19,8 @@ enum Command {
 };
 
 static constexpr uint64_t DEFAULT_GENERATION_COUNT = UINT64_MAX;
-static constexpr double DEFAULT_LEARN_RATE = 0.3;
-static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.99;
+static constexpr double DEFAULT_LEARN_RATE = 0.01;
+static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.90;
 static constexpr double DEFAULT_RANDOM_RATE = 0.3;
 
 std::atomic<bool> cinReady(false);

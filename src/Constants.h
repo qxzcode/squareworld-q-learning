@@ -9,5 +9,5 @@ namespace simulation {
     constexpr double PLAYER_FRICTION = 0.5;
     constexpr double BULLET_SPEED = 6;
     constexpr double PLAYER_SIZE = 6;
-    constexpr unsigned int FIRE_RATE = 6;
+    constexpr unsigned int FIRE_RATE = 6*3;
 }

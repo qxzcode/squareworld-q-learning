@@ -10,10 +10,10 @@
 class Learner {
 public:
     static constexpr unsigned NUM_INPUTS = GameState::NUM_VALUES + Action::NUM_ACTIONS;
-    static constexpr uint64_t REPLAY_MEMORY_SIZE = 200;
-    static constexpr uint64_t TRAIN_LOOPS = 300;
-    static constexpr unsigned HIDDEN_LAYERS = 3;
-    static constexpr unsigned HIDDEN_LAYER_NEURONS = 10;
+    static constexpr uint64_t REPLAY_MEMORY_SIZE = 500;
+    static constexpr uint64_t TRAIN_LOOPS = 100;
+    static constexpr unsigned HIDDEN_LAYERS = 1;
+    static constexpr unsigned HIDDEN_LAYER_NEURONS = 6;
     
     Learner(Learner&&) = default;
     Learner(const Learner&) = delete; // I'm lazy

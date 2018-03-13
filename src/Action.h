@@ -1,7 +1,7 @@
 #pragma once
 
 enum Action {
-    NONE, UP, DOWN, LEFT, RIGHT,
+    LEFT, NONE, UP, DOWN, RIGHT,
     NUM_ACTIONS
 };
 
