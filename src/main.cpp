@@ -97,6 +97,7 @@ void visualize(int scale) {
     Learner learner(DEFAULT_LEARN_RATE, DEFAULT_DISCOUNT_FACTOR, 0);
     learner.load();
     GameState state;
+    simulation::reset(state);
     Visualizer visualizer(learner, state);
     visualizer.scale = scale;
     cout << "> Running SDL visualizer" << endl;
