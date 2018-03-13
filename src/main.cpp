@@ -11,7 +11,19 @@ enum Command {
 };
 
 void train() {
-    Learner learner(0.3, 0.9, 0.1); // learning rate, discount factor, random action rate
+    double learnRate = 0.3;
+    double discountFactor = 0.9;
+    double randomRate = 0.1;
+
+    cout << "> Running Q-Learning train" << endl;
+    cout << "Learning rate: " << learnRate << endl;
+    cout << "Discount factor: " << discountFactor << endl;
+    cout << "Random action rate: " << randomRate << endl;
+    cout << "Replay memory: " << Learner::REPLAY_MEMORY_SIZE << endl;
+    cout << "Train loops: " << Learner::TRAIN_LOOPS << endl;
+    cout << "Training for " << Learner::GENERATION_COUNT << " generations" << endl;
+
+    Learner learner(learnRate, discountFactor, randomRate); // learning rate, discount factor, random action rate
     GameState state;
     simulation::reset(state);
     
@@ -24,12 +36,17 @@ void train() {
             simulation::reset(state);
         }
     }
+
+    cout << "Saving neural network" << endl;
+    learner.save();
+    cout << "Save completed successfully." << endl;
 }
 
 void visualize() {
     #ifdef VISUALIZER
     cout << "> Running SDL visualizer" << endl;
     Learner learner;
+    learner.load();
     GameState state;
     Visualizer visualizer(learner, state);
     visualizer.loop();
