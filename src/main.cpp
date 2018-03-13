@@ -94,7 +94,7 @@ void train(bool fresh, uint64_t generationCount) {
 void visualize(int scale) {
     #ifdef VISUALIZER
     cout << "Loading saved model with default parameters." << endl;
-    Learner learner(DEFAULT_LEARN_RATE, DEFAULT_DISCOUNT_FACTOR, DEFAULT_RANDOM_RATE);
+    Learner learner(DEFAULT_LEARN_RATE, DEFAULT_DISCOUNT_FACTOR, 0);
     learner.load();
     GameState state;
     Visualizer visualizer(learner, state);
