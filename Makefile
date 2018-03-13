@@ -18,9 +18,9 @@ GXX := g++
 LD  := ld
 
 # build flags
-GCCFLAGS  := -Wall -Wextra
-GXXFLAGS  := -std=c++14
-LDFLAGS   := 
+GCCFLAGS  := $(GCCFLAGS) -Wall -Wextra
+GXXFLAGS  := $(GXXFLAGS) -std=c++14
+LDFLAGS   := $(LDFLAGS)
 
 ifeq ($(DEBUG),FALSE)
 	GCCFLAGS += -O3#s
