@@ -17,7 +17,7 @@ enum Command {
 
 static constexpr uint64_t DEFAULT_GENERATION_COUNT = 1000;
 static constexpr double DEFAULT_LEARN_RATE = 0.3;
-static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.9;
+static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.99;
 static constexpr double DEFAULT_RANDOM_RATE = 0.1;
 
 void train(bool fresh, uint64_t generationCount) {
@@ -41,6 +41,7 @@ void train(bool fresh, uint64_t generationCount) {
     GameState state;
     simulation::reset(state);
     
+    double lastProgress = util::getTime();
     for (uint64_t n = 0; n < generationCount; n++) {
         GameState lastState = state;
         Action action = learner.chooseAction(state);
@@ -48,6 +49,12 @@ void train(bool fresh, uint64_t generationCount) {
         learner.observeReward(lastState, action, res.second? lastState : state, res.first);
         if (res.second) {
             simulation::reset(state);
+        }
+        
+        double time = util::getTime();
+        if (time - lastProgress > 1.0) {
+            lastProgress += 1.0;
+            cout << (100*n/generationCount) << "%\r" << std::flush;
         }
     }
 

@@ -116,7 +116,7 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
 
     // welp, player's still alive
     // take your cookie and leave
-    return {0.04, false};
+    return {0.004, false};
 }
 
 void simulation::reset(GameState& state) {
