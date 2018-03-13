@@ -17,7 +17,6 @@ public:
     Learner(double learningRate, double discountFactor, double randomRate):
                 learningRate(learningRate),discountFactor(discountFactor),randomRate(randomRate) {
         ann = genann_init(NUM_INPUTS, 3, 10, 1);
-        ann->activation_output = genann_act_linear;
     }
     ~Learner() {
         genann_free(ann);
