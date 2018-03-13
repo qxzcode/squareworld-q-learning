@@ -96,7 +96,7 @@ genann *genann_init(int inputs, int hidden_layers, int hidden, int outputs) {
 
     /* Allocate extra size for weights, outputs, and deltas. */
     const int size = sizeof(genann) + sizeof(double) * (total_weights + total_neurons + (total_neurons - inputs));
-    genann *ret = malloc(size);
+    genann *ret = (genann*)malloc(size);
     if (!ret) return 0;
 
     ret->inputs = inputs;
@@ -152,7 +152,7 @@ genann *genann_read(FILE *in) {
 
 genann *genann_copy(genann const *ann) {
     const int size = sizeof(genann) + sizeof(double) * (ann->total_weights + ann->total_neurons + (ann->total_neurons - ann->inputs));
-    genann *ret = malloc(size);
+    genann *ret = (genann*)malloc(size);
     if (!ret) return 0;
 
     memcpy(ret, ann, size);

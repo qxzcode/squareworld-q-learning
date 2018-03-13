@@ -29,6 +29,8 @@
 
 #include <stdio.h>
 
+#include "util.h"
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -36,7 +38,8 @@ extern "C" {
 #ifndef GENANN_RANDOM
 /* We use the following for uniform random numbers between 0 and 1.
  * If you have a better function, redefine this macro. */
-#define GENANN_RANDOM() (((double)rand())/RAND_MAX)
+// #define GENANN_RANDOM() (((double)rand())/RAND_MAX)
+#define GENANN_RANDOM (util::rand)
 #endif
 
 
