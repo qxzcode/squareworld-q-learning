@@ -3,7 +3,6 @@
 #include <utility> // std::pair
 
 #include "GameState.h"
-#include "Constants.h"
 
 namespace simulation {
     

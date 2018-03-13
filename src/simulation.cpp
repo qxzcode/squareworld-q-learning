@@ -2,6 +2,8 @@
 
 #include <cmath>
 
+#include "Constants.h"
+
 static void rotate(double& x, double& y, double sin, double cos) {
     double newX = x*cos+y*sin, newY = y*cos-x*sin;
     x = newX; y = newY;
@@ -102,9 +104,9 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     }
 
     // slightly penalize not moving
-    if (util::compareDouble(std::abs(state.playerVx), 0) && util::compareDouble(std::abs(state.playerVy), 0)) {
-        passiveReward = 0;
-    }
+    // if (util::compareDouble(std::abs(state.playerVx), 0) && util::compareDouble(std::abs(state.playerVy), 0)) {
+    //     passiveReward = 0;
+    // }
 
     // Fire a bullet (dark magick formula for aim)
     if (state.fireCycle >= FIRE_RATE) {
@@ -146,4 +148,10 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
 void simulation::reset(GameState& state) {
     state.playerX = util::rand() * simulation::SCREEN_WIDTH;
     state.playerY = util::rand() * simulation::SCREEN_HEIGHT;
+    state.playerVx = state.playerVy = 0.0;
+    for (auto&& b : state.bullets) {
+        b.x = simulation::SCREEN_WIDTH/2;
+        b.y = simulation::SCREEN_HEIGHT/2;
+        b.direction = 0.0;
+    }
 }
