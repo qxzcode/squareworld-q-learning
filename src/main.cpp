@@ -27,7 +27,15 @@ void train() {
 }
 
 void visualize() {
-
+    #ifdef VISUALIZER
+    cout << "> Running SDL visualizer" << endl;
+    Learner learner;
+    GameState state;
+    Visualizer visualizer(learner, state);
+    visualizer.loop();
+    #else
+    cout << "Visualizer support not compiled in this binary." << endl;
+    #endif
 }
 
 int main(int argc, char* argv[]) {
