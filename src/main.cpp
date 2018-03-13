@@ -1,3 +1,5 @@
+#include <SDL2/SDL.h>
+
 #include "Learner.h"
 #include "Visualizer.h"
 #include "simulation.h"
@@ -85,6 +87,7 @@ int main(int argc, char* argv[]) {
             break;
         case Command::UNKNOWN:
             cout << "Unknown command " << argv[1] << endl;
+            cout << "Commands: t, v " << endl;
             return -1;
     }
     
