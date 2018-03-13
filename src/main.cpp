@@ -15,11 +15,12 @@ enum Command {
     UNKNOWN
 };
 
+static constexpr uint64_t DEFAULT_GENERATION_COUNT = 1000;
 static constexpr double DEFAULT_LEARN_RATE = 0.3;
 static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.9;
 static constexpr double DEFAULT_RANDOM_RATE = 0.1;
 
-void train(bool fresh) {
+void train(bool fresh, uint64_t generationCount) {
     double learnRate = DEFAULT_LEARN_RATE;
     double discountFactor = DEFAULT_DISCOUNT_FACTOR;
     double randomRate = DEFAULT_RANDOM_RATE;
@@ -30,7 +31,7 @@ void train(bool fresh) {
     cout << "Random action rate: " << randomRate << endl;
     cout << "Replay memory: " << Learner::REPLAY_MEMORY_SIZE << endl;
     cout << "Train loops: " << Learner::TRAIN_LOOPS << endl;
-    cout << "Training for " << Learner::GENERATION_COUNT << " generations" << endl;
+    cout << "Training for " << generationCount << " generations" << endl;
 
     Learner learner(learnRate, discountFactor, randomRate); // learning rate, discount factor, random action rate
     if (!fresh) {
@@ -40,7 +41,7 @@ void train(bool fresh) {
     GameState state;
     simulation::reset(state);
     
-    for (unsigned long n = 0; n < Learner::GENERATION_COUNT; n++) {
+    for (uint64_t n = 0; n < generationCount; n++) {
         GameState lastState = state;
         Action action = learner.chooseAction(state);
         auto res = simulation::update(state, action);
@@ -75,13 +76,19 @@ int main(int argc, char* argv[]) {
 
     Command command = Command::TRAIN;
     bool fresh = true;
+    uint64_t generationCount = DEFAULT_GENERATION_COUNT;
     if (argc > 1) {
         std::string carg(argv[1]);
-        if (carg == "t") {
+        if (carg.find("t") != std::string::npos) {
             command = Command::TRAIN;
-        } else if (carg == "r") {
-            command = Command::TRAIN;
-            fresh = false;
+            if (carg.find("r") != std::string::npos) {
+                fresh = false;
+            }
+            if (argc > 2) {
+                std::string gcarg(argv[2]);
+                std::istringstream iss(gcarg);
+                iss >> generationCount;
+            }
         } else if (carg == "v") {
             command = Command::VISUALIZE;
         } else {
@@ -91,7 +98,7 @@ int main(int argc, char* argv[]) {
 
     switch (command) {
         case Command::TRAIN:
-            train(fresh);
+            train(fresh, generationCount);
             break;
         case Command::VISUALIZE:
             visualize();

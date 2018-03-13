@@ -42,6 +42,7 @@
         "cstddef": "cpp",
         "numeric": "cpp",
         "optional": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "vector": "cpp"
     }
 }

@@ -9,9 +9,8 @@
 class Learner {
 public:
     static constexpr unsigned NUM_INPUTS = GameState::NUM_VALUES + 1;
-    static constexpr unsigned long long REPLAY_MEMORY_SIZE = 200;
-    static constexpr unsigned long long TRAIN_LOOPS = 300;
-    static constexpr unsigned long long GENERATION_COUNT = 1000;
+    static constexpr uint64_t REPLAY_MEMORY_SIZE = 200;
+    static constexpr uint64_t TRAIN_LOOPS = 300;
     
     Learner(Learner&&) = default;
     Learner(const Learner&) = delete; // I'm lazy

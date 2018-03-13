@@ -1,5 +1,8 @@
 #pragma once
 
+#include <cstdint>
+using std::uint64_t;
+
 namespace util {
     
     double rand();
