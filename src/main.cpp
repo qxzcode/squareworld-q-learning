@@ -2,6 +2,9 @@
 #include <SDL2/SDL.h> // for the SDL_main thingy
 #endif
 
+#include <thread>
+#include <atomic>
+
 #include "Learner.h"
 #include "Visualizer.h"
 #include "simulation.h"
@@ -19,6 +22,12 @@ static constexpr uint64_t DEFAULT_GENERATION_COUNT = 1000;
 static constexpr double DEFAULT_LEARN_RATE = 0.3;
 static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.99;
 static constexpr double DEFAULT_RANDOM_RATE = 0.1;
+
+std::atomic<bool> cinReady(false);
+void flushCin() {
+    cin.seekg(0, std::ios::end);
+    cin.clear();
+}
 
 void train(bool fresh, uint64_t generationCount) {
     double learnRate = DEFAULT_LEARN_RATE;
@@ -41,8 +50,16 @@ void train(bool fresh, uint64_t generationCount) {
     GameState state;
     simulation::reset(state);
     
+    // start helper thread
+    std::thread helperThread([]() {
+        cin.peek();
+        flushCin();
+        cinReady = true;
+    });
+    
     double lastProgress = util::getTime();
-    for (uint64_t n = 0; n < generationCount; n++) {
+    double lastSave = util::getTime();
+    for (uint64_t n = 0; !cinReady; n++) {
         GameState lastState = state;
         Action action = learner.chooseAction(state);
         auto res = simulation::update(state, action);
@@ -53,14 +70,20 @@ void train(bool fresh, uint64_t generationCount) {
         
         double time = util::getTime();
         if (time - lastProgress > 1.0) {
-            lastProgress += 1.0;
-            cout << (100*n/generationCount) << "%\r" << std::flush;
+            lastProgress = time;
+            cout << "Generation: " << n << "         \r" << std::flush;
+        }
+        if (time - lastSave > 5*60.0) {
+            lastSave = time;
+            learner.save();
         }
     }
 
     cout << "Saving neural network" << endl;
     learner.save();
     cout << "Save completed successfully." << endl;
+    
+    helperThread.join();
 }
 
 void visualize() {
