@@ -18,7 +18,7 @@ enum Command {
     UNKNOWN
 };
 
-static constexpr uint64_t DEFAULT_GENERATION_COUNT = 1000;
+static constexpr uint64_t DEFAULT_GENERATION_COUNT = UINT64_MAX;
 static constexpr double DEFAULT_LEARN_RATE = 0.3;
 static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.99;
 static constexpr double DEFAULT_RANDOM_RATE = 0.1;
@@ -40,7 +40,7 @@ void train(bool fresh, uint64_t generationCount) {
     cout << "Random action rate: " << randomRate << endl;
     cout << "Replay memory: " << Learner::REPLAY_MEMORY_SIZE << endl;
     cout << "Train loops: " << Learner::TRAIN_LOOPS << endl;
-    cout << "Training for " << generationCount << " generations" << endl;
+    cout << "Training for " << generationCount << " generations (press ENTER to halt)" << endl;
 
     Learner learner(learnRate, discountFactor, randomRate); // learning rate, discount factor, random action rate
     if (!fresh) {
@@ -59,7 +59,7 @@ void train(bool fresh, uint64_t generationCount) {
     
     double lastProgress = util::getTime();
     double lastSave = util::getTime();
-    for (uint64_t n = 0; !cinReady; n++) {
+    for (uint64_t n = 0; !cinReady && n < generationCount; n++) {
         GameState lastState = state;
         Action action = learner.chooseAction(state);
         auto res = simulation::update(state, action);
