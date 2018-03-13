@@ -66,7 +66,7 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
 
     // enforce player bounding
     if (state.playerX() < PLAYER_SIZE / 2) {
-        state.playerX() = PLAYER_SIZE;
+        state.playerX() = PLAYER_SIZE / 2;
         vx = 0;
     }
     if (state.playerX() + (PLAYER_SIZE / 2) > SCREEN_WIDTH) {
@@ -74,7 +74,7 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
         vx = 0;
     }
     if (state.playerY() < PLAYER_SIZE) {
-        state.playerY() = PLAYER_SIZE;
+        state.playerY() = PLAYER_SIZE / 2;
         vy = 0;
     }
     if (state.playerY() + (PLAYER_SIZE / 2) > SCREEN_HEIGHT) {
