@@ -50,6 +50,8 @@ void Visualizer::draw() const {
     fillRect(surface, 0, 0, simulation::SCREEN_WIDTH * Visualizer::SCALE,
         simulation::SCREEN_HEIGHT * Visualizer::SCALE, {0xFF, 0xFF, 0xFF});
     // --render
+    // enemy
+    fillRect(surface, simulation::SCREEN_WIDTH / 2 - simulation::PLAYER_SIZE / 2, simulation::SCREEN_HEIGHT / 2 - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x11, 0x11, 0x11});
     // player
     fillRect(surface, state.playerX() - simulation::PLAYER_SIZE / 2, state.playerY() - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x00, 0x00, 0xFF});
     // bullets [arbitrarily size 2]
