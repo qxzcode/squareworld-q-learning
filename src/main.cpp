@@ -1,4 +1,5 @@
 #include "Learner.h"
+#include "Visualizer.h"
 #include "simulation.h"
 #include "util.h"
 
@@ -10,10 +11,14 @@ enum Command {
     UNKNOWN
 };
 
+static constexpr double DEFAULT_LEARN_RATE = 0.3;
+static constexpr double DEFAULT_DISCOUNT_FACTOR = 0.9;
+static constexpr double DEFAULT_RANDOM_RATE = 0.1;
+
 void train() {
-    double learnRate = 0.3;
-    double discountFactor = 0.9;
-    double randomRate = 0.1;
+    double learnRate = DEFAULT_LEARN_RATE;
+    double discountFactor = DEFAULT_DISCOUNT_FACTOR;
+    double randomRate = DEFAULT_RANDOM_RATE;
 
     cout << "> Running Q-Learning train" << endl;
     cout << "Learning rate: " << learnRate << endl;
@@ -44,11 +49,12 @@ void train() {
 
 void visualize() {
     #ifdef VISUALIZER
-    cout << "> Running SDL visualizer" << endl;
-    Learner learner;
+    cout << "Loading saved model with default parameters." << endl;
+    Learner learner(DEFAULT_LEARN_RATE, DEFAULT_DISCOUNT_FACTOR, DEFAULT_RANDOM_RATE);
     learner.load();
     GameState state;
     Visualizer visualizer(learner, state);
+    cout << "> Running SDL visualizer" << endl;
     visualizer.loop();
     #else
     cout << "Visualizer support not compiled in this binary." << endl;
