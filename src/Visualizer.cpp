@@ -1,5 +1,7 @@
 #ifdef VISUALIZER
 #include "Visualizer.h"
+#include "debug.h"
+#include <cstdlib>
 
 struct Color {
     int r, g, b;
@@ -12,7 +14,11 @@ static void fillRect(SDL_Surface* surface, int x, int y, int w, int h, Color col
 
 void Visualizer::init() {
     // initialize SDL
-    SDL_Init(SDL_INIT_VIDEO);
+    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+        auto err = SDL_GetError();
+        cerr << "SDL_Init() failed: " << err << endl;
+        std::exit(-1);
+    }
     window = SDL_CreateWindow("Squareworld Q-Learning", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
         simulation::SCREEN_WIDTH * Visualizer::SCALE, simulation::SCREEN_HEIGHT * Visualizer::SCALE, SDL_WINDOW_ALLOW_HIGHDPI);
     surface = SDL_GetWindowSurface(window);
