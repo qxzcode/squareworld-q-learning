@@ -83,8 +83,8 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     state.fireCycle++;
     // step the bullets
     for (unsigned int i = 0; i < GameState::NUM_BULLETS; i++) {
-        state.bulletX(i) += std::cos(state.bulletDirection(i));
-        state.bulletY(i) += std::sin(state.bulletDirection(i));
+        state.bulletX(i) += std::cos(state.bulletDirection(i)) * simulation::BULLET_SPEED;
+        state.bulletY(i) += std::sin(state.bulletDirection(i)) * simulation::BULLET_SPEED;
 
         // check collision with player
         if ((state.bulletX(i) > state.playerX())
