@@ -47,14 +47,14 @@ Action Learner::chooseAction(const GameState& state) const {
 
 void Learner::load() {
     genann_free(ann);
-    FILE* file = fopen("save.txt", "r");
+    FILE* file = fopen("save.nnt", "r");
     ann = genann_read(file);
     fclose(file);
     cout << "Loaded learner" << endl;
 }
 
 void Learner::save() const {
-    FILE* file = fopen("save.txt", "w");
+    FILE* file = fopen("save.nnt", "w");
     genann_write(ann, file);
     fclose(file);
     cout << "Saved learner" << endl;
