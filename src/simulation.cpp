@@ -62,47 +62,47 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
             break;
     }
     // apply acceleration
-    state.playerVx() += ax;
-    state.playerVy() += ay;
+    state.playerVx += ax;
+    state.playerVy += ay;
 
     // enforce max velocity
-    if (state.playerVx() > PLAYER_MAX_SPEED) {
-        state.playerVx() = PLAYER_MAX_SPEED;
+    if (state.playerVx > PLAYER_MAX_SPEED) {
+        state.playerVx = PLAYER_MAX_SPEED;
     }
-    if (state.playerVx() < -PLAYER_MAX_SPEED) {
-        state.playerVx() = -PLAYER_MAX_SPEED;
+    if (state.playerVx < -PLAYER_MAX_SPEED) {
+        state.playerVx = -PLAYER_MAX_SPEED;
     }
-    if (state.playerVy() > PLAYER_MAX_SPEED) {
-        state.playerVy() = PLAYER_MAX_SPEED;
+    if (state.playerVy > PLAYER_MAX_SPEED) {
+        state.playerVy = PLAYER_MAX_SPEED;
     }
-    if (state.playerVy() < -PLAYER_MAX_SPEED) {
-        state.playerVy() = -PLAYER_MAX_SPEED;
+    if (state.playerVy < -PLAYER_MAX_SPEED) {
+        state.playerVy = -PLAYER_MAX_SPEED;
     }
     
     // integrate velocity
-    state.playerX() += state.playerVx();
-    state.playerY() += state.playerVy();
+    state.playerX += state.playerVx;
+    state.playerY += state.playerVy;
 
     // enforce player bounding
-    if (state.playerX() < PLAYER_SIZE / 2) {
-        state.playerX() = PLAYER_SIZE / 2;
-        state.playerVx() = 0;
+    if (state.playerX < PLAYER_SIZE / 2) {
+        state.playerX = PLAYER_SIZE / 2;
+        state.playerVx = 0;
     }
-    if (state.playerX() + (PLAYER_SIZE / 2) > SCREEN_WIDTH) {
-        state.playerX() = SCREEN_WIDTH - (PLAYER_SIZE / 2);
-        state.playerVx() = 0;
+    if (state.playerX + (PLAYER_SIZE / 2) > SCREEN_WIDTH) {
+        state.playerX = SCREEN_WIDTH - (PLAYER_SIZE / 2);
+        state.playerVx = 0;
     }
-    if (state.playerY() < PLAYER_SIZE) {
-        state.playerY() = PLAYER_SIZE / 2;
-        state.playerVy() = 0;
+    if (state.playerY < PLAYER_SIZE) {
+        state.playerY = PLAYER_SIZE / 2;
+        state.playerVy = 0;
     }
-    if (state.playerY() + (PLAYER_SIZE / 2) > SCREEN_HEIGHT) {
-        state.playerY() = SCREEN_HEIGHT - (PLAYER_SIZE / 2);
-        state.playerVy() = 0;
+    if (state.playerY + (PLAYER_SIZE / 2) > SCREEN_HEIGHT) {
+        state.playerY = SCREEN_HEIGHT - (PLAYER_SIZE / 2);
+        state.playerVy = 0;
     }
 
     // slightly penalize not moving
-    if (util::compareDouble(std::abs(state.playerVx()), 0) && util::compareDouble(std::abs(state.playerVy()), 0)) {
+    if (util::compareDouble(std::abs(state.playerVx), 0) && util::compareDouble(std::abs(state.playerVy), 0)) {
         passiveReward = 0;
     }
 
@@ -110,29 +110,29 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
     if (state.fireCycle >= FIRE_RATE) {
         state.fireCycle = 0;
         double bulletAngle = calcAutoShoot(
-            (SCREEN_WIDTH / 2) - state.playerX(),
-            (SCREEN_HEIGHT / 2) - state.playerY(),
-            state.playerVx(), state.playerVy(),
+            (SCREEN_WIDTH / 2) - state.playerX,
+            (SCREEN_HEIGHT / 2) - state.playerY,
+            state.playerVx, state.playerVy,
             BULLET_SPEED
         );
         // bullet starts in center
-        state.bulletX(state.currentBullet) = simulation::SCREEN_WIDTH / 2;
-        state.bulletY(state.currentBullet) = simulation::SCREEN_HEIGHT / 2;
-        state.bulletDirection(state.currentBullet) = bulletAngle;
+        state.bullets[state.currentBullet].x = simulation::SCREEN_WIDTH / 2;
+        state.bullets[state.currentBullet].y = simulation::SCREEN_HEIGHT / 2;
+        state.bullets[state.currentBullet].direction = bulletAngle;
         state.currentBullet++;
         state.currentBullet %= GameState::NUM_BULLETS;
     }
     state.fireCycle++;
     // step the bullets
     for (unsigned int i = 0; i < GameState::NUM_BULLETS; i++) {
-        state.bulletX(i) += std::cos(state.bulletDirection(i)) * simulation::BULLET_SPEED;
-        state.bulletY(i) += std::sin(state.bulletDirection(i)) * simulation::BULLET_SPEED;
+        state.bullets[i].x += std::cos(state.bullets[i].direction) * simulation::BULLET_SPEED;
+        state.bullets[i].y += std::sin(state.bullets[i].direction) * simulation::BULLET_SPEED;
 
         // check collision with player
-        if ((state.bulletX(i) > state.playerX() - (simulation::PLAYER_SIZE / 2))
-            && (state.bulletX(i) < state.playerX() + (simulation::PLAYER_SIZE / 2))
-            && (state.bulletY(i) > state.playerY() - (simulation::PLAYER_SIZE / 2))
-            && (state.bulletY(i) < state.playerY() + (simulation::PLAYER_SIZE / 2))) {
+        if ((state.bullets[i].x > state.playerX - (simulation::PLAYER_SIZE / 2))
+            && (state.bullets[i].x < state.playerX + (simulation::PLAYER_SIZE / 2))
+            && (state.bullets[i].y > state.playerY - (simulation::PLAYER_SIZE / 2))
+            && (state.bullets[i].y < state.playerY + (simulation::PLAYER_SIZE / 2))) {
             // ouch.
             return {-1.0, true};
         }
@@ -144,6 +144,6 @@ std::pair<double, bool> simulation::update(GameState& state, Action action) {
 }
 
 void simulation::reset(GameState& state) {
-    state.playerX() = util::rand() * simulation::SCREEN_WIDTH;
-    state.playerY() = util::rand() * simulation::SCREEN_HEIGHT;
+    state.playerX = util::rand() * simulation::SCREEN_WIDTH;
+    state.playerY = util::rand() * simulation::SCREEN_HEIGHT;
 }

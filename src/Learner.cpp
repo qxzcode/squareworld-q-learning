@@ -14,23 +14,31 @@ constexpr double MIN_DOUBLE = -std::numeric_limits<double>::max();
 
 static std::default_random_engine randEngine(std::chrono::system_clock::now().time_since_epoch().count());
 
+static double normX(double x) {
+    return x / simulation::SCREEN_WIDTH;
+}
+static double normY(double y) {
+    return y / simulation::SCREEN_HEIGHT;
+}
+static double normV(double v) {
+    return (v + simulation::PLAYER_MAX_SPEED) / (simulation::PLAYER_MAX_SPEED * 2);
+}
+static double normAngle(double angle) {
+    return angle / 3.1415926535897931;
+}
+
 using inputArr_t = double[Learner::NUM_INPUTS];
 static void fillInputs(inputArr_t& inputs, const GameState& state, Action action) {
-    std::copy(std::begin(state.values), std::end(state.values), inputs);
-    // normalize player values
-    inputs[0] /= simulation::SCREEN_WIDTH;
-    inputs[1] /= simulation::SCREEN_HEIGHT;
-    inputs[2] = (inputs[2] + simulation::PLAYER_MAX_SPEED) / (simulation::PLAYER_MAX_SPEED * 2);
-    inputs[3] = (inputs[3] + simulation::PLAYER_MAX_SPEED) / (simulation::PLAYER_MAX_SPEED * 2);
-    // normalize bullet positions
-    for (unsigned short i = GameState::NUM_PLAYER_VALUES; i < GameState::NUM_VALUES; i++) {
-        if ((i % 3) == 0) {
-            inputs[i] /= simulation::SCREEN_WIDTH;
-        } else if ((i % 3) == 1) {
-            inputs[i] /= simulation::SCREEN_HEIGHT;
-        }
+    inputs[0] = normX(state.playerX);
+    inputs[1] = normY(state.playerY);
+    inputs[2] = normV(state.playerVx);
+    inputs[3] = normV(state.playerVy);
+    for (unsigned i = 0; i < GameState::NUM_BULLETS; i++) {
+        inputs[4+i*3] = normX(state.bullets[i].x - state.playerX);
+        inputs[5+i*3] = normY(state.bullets[i].y - state.playerY);
+        inputs[6+i*3] = normAngle(state.bullets[i].direction);
     }
-    for (unsigned short i = 0; i < Action::NUM_ACTIONS; i++) {
+    for (unsigned i = 0; i < Action::NUM_ACTIONS; i++) {
         inputs[GameState::NUM_VALUES + i] = action==i? 1.0 : 0.0;
     }
 }

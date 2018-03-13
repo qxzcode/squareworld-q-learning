@@ -55,10 +55,10 @@ void Visualizer::draw() const {
     // enemy
     fillRect(surface, simulation::SCREEN_WIDTH / 2 - simulation::PLAYER_SIZE / 2, simulation::SCREEN_HEIGHT / 2 - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x11, 0x11, 0x11});
     // player
-    fillRect(surface, state.playerX() - simulation::PLAYER_SIZE / 2, state.playerY() - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x00, 0x00, 0xFF});
+    fillRect(surface, state.playerX - simulation::PLAYER_SIZE / 2, state.playerY - simulation::PLAYER_SIZE / 2, simulation::PLAYER_SIZE, simulation::PLAYER_SIZE, {0x00, 0x00, 0xFF});
     // bullets [arbitrarily size 2]
     for (unsigned int i = 0; i < GameState::NUM_BULLETS; i++) {
-        fillRect(surface, state.bulletX(i) - 1, state.bulletY(i) - 1, 2, 2, {0xFF, 0x00, 0x00});
+        fillRect(surface, state.bullets[i].x - 1, state.bullets[i].y - 1, 2, 2, {0xFF, 0x00, 0x00});
     }
     SDL_UpdateWindowSurface(window);
 }
